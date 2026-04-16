@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+  <html lang="ko">
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>FEURA Instagram Real-time Dashboard</title>
+      <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-50">
+      <div id="root">
+          <div class="min-h-screen bg-gradient-to-br from-pink-50 to-purple-50">
+              <!-- Header -->
+              <header class="bg-white shadow-sm border-b border-gray-200">
+                  <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+                      <div class="flex items-center gap-3">
+                          <div class="w-12 h-12 bg-gradient-to-br from-pink-500 to-purple-500 rounded-lg flex items-center justify-center">
+                              <span class="text-white font-bold text-lg">F</span>
+                          </div>
+                          <div>
+                              <h1 class="text-2xl font-bold text-gray-900">FEURA</h1>
+                              <p class="text-sm text-gray-500">Instagram Real-time Dashboard</p>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-sm text-gray-500">Last updated: <span id="lastUpdate">Loading...</span></p>
+                      </div>
+                  </div>
+              </header>
+
+              <!-- Tab Navigation -->
+              <div class="bg-white border-b border-gray-200">
+                  <div class="max-w-7xl mx-auto px-6">
+                      <div class="flex gap-8">
+                          <button onclick="switchTab('realtime')" class="tab-btn active py-4 px-2 border-b-2 border-pink-500 font-medium text-gray-900" data-tab="realtime">
+                              📊 실시간 대시보드
+                          </button>
+                          <button onclick="switchTab('archive')" class="tab-btn py-4 px-2 border-b-2 border-transparent font-medium text-gray-500 hover:text-gray-700" data-tab="archive">
+                              📁 아카이브
+                          </button>
+                      </div>
+                  </div>
+              </div>
+
+              <!-- Content -->
+              <main class="max-w-7xl mx-auto px-6 py-8">
+                  <!-- Real-time Dashboard Tab -->
+                  <div id="realtimeTab" class="tab-content">
+                      <!-- FEURA Metrics Section -->
+                      <section class="mb-8">
+                          <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+                              <span class="text-pink-500">●</span> FEURA Account Metrics
+                        </h2>
+                          <div id="metricsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                              <div class="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+                                  <div class="text-gray-600 text-sm font-medium">Followers</div>
+                                  <div class="text-3xl font-bold text-gray-900 mt-2" id="followersMetric">125,400</div>
+                                  <div class="text-xs text-gray-500 mt-2">Updated: <span id="followersTime">Now</span></div>
+                              </div>
+                              <div class="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+                                  <div class="text-gray-600 text-sm font-medium">Engagement Rate</div>
+                                  <div class="text-3xl font-bold text-gray-900 mt-2" id="engagementMetric">8.50%</div>
+                                  <div class="text-xs text-gray-500 mt-2">Updated: <span id="engagementTime">Now</span></div>
+                              </div>
+                              <div class="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+                                  <div class="text-gray-600 text-sm font-medium">Reach</div>
+                                  <div class="text-3xl font-bold text-gray-900 mt-2" id="reachMetric">2,340,000</div>
+                                  <div class="text-xs text-gray-500 mt-2">Updated: <span id="reachTime">Now</span></div>
+                              </div>
+                              <div class="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+                                  <div class="text-gray-600 text-sm font-medium">Impressions</div>
+                                  <div class="text-3xl font-bold text-gray-900 mt-2" id="impressionsMetric">3,500,000</div>
+                                  <div class="text-xs text-gray-500 mt-2">Updated: <span id="impressionsTime">Now</span></div>
+                              </div>
+                          </div>
+                      </section>
+
+                      <!-- Competitors Tracking Section -->
+                      <section class="mb-8">
+                          <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+                              <span class="text-purple-500">●</span> Top 10 Competitors
+                          </h2>
+                          <div id="competitorsContainer" class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                              <table class="w-full">
+                                  <thead class="bg-gray-50 border-b border-gray-200">
+                                      <tr>
+                                          <th class="px-6 py-4 text-left text-sm font-semibold text-gray-900">Rank</th>
+                                          <th class="px-6 py-4 text-left text-sm font-semibold text-gray-900">Brand Name</th>
+                                          <th class="px-6 py-4 text-left text-sm font-semibold text-gray-900">Followers</th>
+                                          <th class="px-6 py-4 text-left text-sm font-semibold text-gray-900">Engagement Rate</th>
+                                          <th class="px-6 py-4 text-left text-sm font-semibold text-gray-900">Avg Comments</th>
+                                          <th class="px-6 py-4 text-left text-sm font-semibold text-gray-900">Avg Likes</th>
+                                      </tr>
+                                  </thead>
+                                  <tbody id="competitorsTable" class="divide-y divide-gray-200">
+                                      <!-- Competitors will be loaded here -->
+                                  </tbody>
+                              </table>
+                          </div>
+                      </section>
+                  </div>
+
+                  <!-- Archive Tab -->
+                  <div id="archiveTab" class="tab-content hidden">
+                      <!-- FEURA Posts Section -->
+                      <section class="mb-8">
+                          <h2 class="text-2xl font-bold text-gray-900 mb-6">FEURA Recent Posts</h2>
+                          <div id="feuraPostsContainer" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                              <!-- FEURA posts will be loaded here -->
+                          </div>
+                      </section>
+
+                      <!-- Competitor Posts Analysis Section -->
+                      <section class="mb-8">
+                          <h2 class="text-2xl font-bold text-gray-900 mb-6">Competitor Posts Analysis (Top 3)</h2>
+                          <div id="competitorPostsContainer" class="space-y-4">
+                              <!-- Competitor analysis will be loaded here -->
+                          </div>
+                      </section>
+                  </div>
+              </main>
+
+              <!-- Footer -->
+              <footer class="bg-white border-t border-gray-200 mt-12">
+                  <div class="max-w-7xl mx-auto px-6 py-6 text-center text-sm text-gray-500">
+                      <p>FEURA Instagram Real-time Dashboard • Last sync: <span id="lastSync">Just now</span></p>
+                  </div>
+              </footer>
+          </div>
+      </div>
+
+      <script>
+          const API_BASE_URL = 'https://feura-ig-dashboard-backend.onrender.com/api/instagram';
+        let excelData = {};
+
+        // Render competitors
+        function renderCompetitors(competitors) {
+                      const tbody = document.getElementById('competitorsTable');
+            tbody.innerHTML = '';
+
+            const mockCompetitors = [
+{ brand_name: '에스네이처', followers: 450000, engagement_rate: 0.12, avg_comments: 450, avg_likes: 2800 },
+{ brand_name: '이니스프리', followers: 380000, engagement_rate: 0.10, avg_comments: 350, avg_likes: 2200 },
+{ brand_name: '올리브영', followers: 320000, engagement_rate: 0.09, avg_comments: 280, avg_likes: 1800 },
+{ brand_name: '더페이스샵', followers: 290000, engagement_rate: 0.08, avg_comments: 220, avg_likes: 1500 },
+{ brand_name: '아이오페', followers: 260000, engagement_rate: 0.11, avg_comments: 310, avg_likes: 1900 },
+{ brand_name: '라네즈', followers: 240000, engagement_rate: 0.07, avg_comments: 180, avg_likes: 1200 },
+{ brand_name: '보비브라운', followers: 210000, engagement_rate: 0.13, avg_comments: 380, avg_likes: 2400 },
+{ brand_name: '엘라스틴', followers: 185000, engagement_rate: 0.06, avg_comments: 140, avg_likes: 900 },
+{ brand_name: '오디너리', followers: 165000, engagement_rate: 0.09, avg_comments: 250, avg_likes: 1600 },
+{ brand_name: '클리오', followers: 145000, engagement_rate: 0.10, avg_comments: 290, avg_likes: 1750 }
+            ];
+
+            mockCompetitors.forEach((competitor, index) => {
+                              const row = document.createElement('tr');
+                              row.className = 'hover:bg-gray-50 transition-colors';
+                row.innerHTML = `
+                                      <td class="px-6 py-4 text-sm font-medium text-gray-900">${index + 1}</td>
+                                      <td class="px-6 py-4 text-sm text-gray-900">${competitor.brand_name || '-'}</td>
+                                      <td class="px-6 py-4 text-sm text-gray-600">${(competitor.followers || 0).toLocaleString()}</td>
+                                      <td class="px-6 py-4 text-sm text-gray-600">${((competitor.engagement_rate || 0) * 100).toFixed(2)}%</td>
+                                      <td class="px-6 py-4 text-sm text-gray-600">${(competitor.avg_comments || 0).toFixed(0)}</td>
+                                      <td class="px-6 py-4 text-sm text-gray-600">${(competitor.avg_likes || 0).toFixed(0)}</td>
+                                  `;
+                tbody.appendChild(row);
+        });
+}
+
+        // Load mock data
+        function loadMockData() {
+                      document.getElementById('lastUpdate').textContent = new Date().toLocaleString('ko-KR');
+            document.getElementById('lastSync').textContent = new Date().toLocaleString('ko-KR');
+            renderCompetitors([]);
+        }
+
+        // Switch tabs
+        function switchTab(tab) {
+                      // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(b => {
+                              b.classList.remove('active', 'border-pink-500', 'text-gray-900');
+                              b.classList.add('border-transparent', 'text-gray-500');
+        });
+
+            // Show selected tab
+            document.getElementById(tab + 'Tab').classList.remove('hidden');
+            document.querySelector(`[data-tab="${tab}"]`).classList.add('active', 'border-pink-500', 'text-gray-900');
+            document.querySelector(`[data-tab="${tab}"]`).classList.remove('border-transparent', 'text-gray-500');
+}
+
+        // Initialize
+        loadMockData();
+    </script>
+
+          <style>
+              .tab-btn.active {
+            border-bottom-color: #ec4899;
+                          color: #111827;
+    }
+    </style>
+      </body>
+      </html>
