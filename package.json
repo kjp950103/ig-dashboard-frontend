@@ -1,0 +1,21 @@
+{
+    "name": "feura-ig-dashboard-frontend",
+    "version": "1.0.0",
+    "description": "FEURA Instagram Real-time Dashboard Frontend",
+    "main": "server.js",
+    "scripts": {
+          "start": "node server.js",
+          "dev": "node server.js"
+    },
+    "engines": {
+          "node": "18.x"
+    },
+    "keywords": [
+          "instagram",
+          "dashboard",
+          "realtime"
+    ],
+    "author": "FEURA Team",
+    "license": "MIT",
+    "dependencies": {}
+}
